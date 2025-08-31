@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-vers="0.0.1"
+vers="0.0.2"
 
 echo "Create new copy of viteyss-site- ... ver: $vers"
 
@@ -63,8 +63,14 @@ pDesc=$res
 mkQuery "0.0.1" "Version"
 pVer=$res
 
+mkQuery "not set" "Autor name, lastname"
+pAutor=$res
+
+mkQuery "not@set.email" "Autor email"
+pEmail=$res
+
 echo "Project / site name [$pName] use in code as [$pNameNovy]"
-echo -e "desc: \n$pDesc\n\nVer: $pVer"
+echo -e "desc: \n$pDesc\n\nAutor: $pAutor <$pEmail>\nVer: $pVer"
 
 
 mkQuery "y" "Write it to files ...[y/n] "
@@ -89,6 +95,10 @@ sold='"version": "0.0.1",'
 snew='"version": "'"$pVer"'",'
 sed -i "s/${sold}/${snew}/g" ./package.json
 
+sold='"author": "",'
+snew='"author": "'"$pAutor"' <'"$pEmail"'>",'
+sed -i "s/${sold}/${snew}/g" ./package.json
+
 sold='description": ""'
 snew='"description": "'"$pDesc"'"'
 sed -i "s/${sold}/${snew}/g" ./package.json
@@ -108,6 +118,10 @@ sold='"c_vys_hello_world_Page'
 snew='"c_vys_'"$pNameNovy"'_Page'
 sed -i "s/${sold}/${snew}/g" ./site.json
 
+sold='"author": "Bartłomiej Ceglik <yoyoek@wp.pl>",'
+snew='"author": "'"$pAutor"' <'"$pEmail"'>",'
+sed -i "s/${sold}/${snew}/g" ./site.json
+
 sold='"ver": "0.0.1",'
 snew='"ver": "'"$pVer"'",'
 sed -i "s/${sold}/${snew}/g" ./site.json
@@ -125,6 +139,10 @@ sed -i "s/${sold}/${snew}/g" ./c_vys_hello_world_Page.js
 
 sold='return `vys Hello World`;'
 snew='return `vys '"$pNameNovy"'`;'
+sed -i "s/${sold}/${snew}/g" ./c_vys_hello_world_Page.js
+
+sold='viteyss-site-hello-wold<br>'
+snew='viteyss-site-'"$pNameNovy"'<br>'
 sed -i "s/${sold}/${snew}/g" ./c_vys_hello_world_Page.js
 
 sold='export { s_vysHelloWolrdPage };'
